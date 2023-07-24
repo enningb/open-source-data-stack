@@ -1,0 +1,71 @@
+version: 2
+
+models:
+  - name: stg_studielink__telbestanden
+    description: ""
+    columns:
+      - name: soort_hoger_onderwijs_code
+        description: '{{ doc("soort_hoger_onderwijs_code") }}'
+
+      - name: brin_code
+        description: '{{ doc("brin_code") }}'
+
+      - name: brin_volgnr
+        description: '{{ doc("brin_volgnr") }}'
+
+      - name: opleidingscode
+        description: '{{ doc("opleidingscode") }}'
+
+      - name: type_hoger_onderwijs_code
+        description: '{{ doc("type_hoger_onderwijs_code") }}'
+
+      - name: opleidingsvorm_code
+        description: '{{ doc("opleidingsvorm_code") }}'
+
+      - name: studiejaar
+        description: '{{ doc("studiejaar") }}'
+
+      - name: fixus
+        description: '{{ doc("fixus") }}'
+
+      - name: maand_vanaf
+        description: '{{ doc("maand_vanaf") }}'
+
+      - name: herkomst_code
+        description: '{{ doc("herkomst_code") }}'
+
+      - name: geslacht_code
+        description: '{{ doc("geslacht_code") }}'
+
+      - name: meercode_v
+        description: '{{ doc("meercode") }}'
+
+      - name: meercode_a
+        description: '{{ doc("meercode") }}'
+
+      - name: status_code
+        description: '{{ doc("status_code") }}'
+
+      - name: hogerejaars_code
+        description: '{{ doc("hogerejaars_code") }}'
+
+      - name: herinschrijving_code
+        description: '{{ doc("herinschrijving_code") }}'
+
+      - name: soort_inschrijving_code
+        description: '{{ doc("soort_inschrijving_code") }}'
+
+      - name: soort_inschrijving_code_wo
+        description: '{{ doc("soort_inschrijving_code_wo") }}'
+
+      - name: aantal
+        description: '{{ doc("aantal") }}'
+
+      - name: dubbel_inschrijvingen
+        description: '{{ doc("dubbel_inschrijvingen") }}'
+
+      - name: gewogen_aantal
+        description: '{{ doc("gewogen_aantal") }}'
+
+      - name: filename
+        description: '{{ doc("filename") }}'

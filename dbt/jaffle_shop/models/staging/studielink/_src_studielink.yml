@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: studielink
+    database: raw
+    schema: public
+    tables:
+      - name: metadata
+      - name: telbestanden

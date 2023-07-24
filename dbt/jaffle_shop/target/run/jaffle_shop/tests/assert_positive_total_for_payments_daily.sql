@@ -9,7 +9,7 @@ select
     FROM
         "raw"."dev"."stg_stripe__payments"
     WHERE
-        payment_created_at = ' 2022-06-03 '
+        payment_created_at = ' 2023-07-22 '
 ),
 test_data AS (
     SELECT

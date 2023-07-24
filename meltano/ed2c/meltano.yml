@@ -1,0 +1,73 @@
+version: 1
+default_environment: dev
+project_id: c454702b-2b53-45cb-83ba-8f9740afb431
+environments:
+  - name: dev
+  - name: staging
+  - name: prod
+plugins:
+  extractors:
+    - name: tap-csv
+      variant: meltanolabs
+      pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
+      select:
+        - telbestanden._sdc_source_file
+        - telbestanden.HBO_WO
+      config:
+        add_metadata_columns: true
+        csv_files_definition: csv_files_definitions.json
+      metadata:
+        studielink:
+          replication-method: INCREMENTAL
+          replication-key: _sdc_source_file
+          _sdc_source_file:
+            is-replication-key: true
+
+  #          replication-key: _sdc_source_file
+  loaders:
+    - name: target-s3
+      variant: crowemi
+      pip_url: git+https://github.com/crowemi/target-s3.git
+      config:
+        cloud_provider.aws.aws_access_key_id: eAKW5O1pd7s3sPicYQsi
+        cloud_provider.aws.aws_bucket: ed2c
+        cloud_provider.aws.aws_region: eu-west-1
+        cloud_provider.aws.aws_endpoint_override: https://storage.ed2c.nl
+        cloud_provider.aws.aws_secret_access_key: zBR6d3u3nBBopndrrMgV5Pt4fU3qxy4DiFMNE4jX
+        format.format_type: parquet
+        prefix: meltano
+        append_date_to_filename: false
+    - name: target-jsonl
+      variant: andyh1203
+      pip_url: target-jsonl
+    - name: target-postgres
+      variant: meltanolabs
+      pip_url: git+https://github.com/MeltanoLabs/target-postgres.git
+      config:
+        add_record_metadata: true
+        database: meltano
+        default_target_schema: raw
+        user: docker
+        host: localhost
+        password: docker
+        # dialect+driver
+        # flattening_enabled
+        # flattening_max_depth
+        # hard_delete
+        # port
+        # sqlalchemy_url
+        # ssh_tunnel.enable
+        # ssh_tunnel.host
+        # ssh_tunnel.port
+        # ssh_tunnel.private_key
+        # ssh_tunnel.private_key_password
+        # ssh_tunnel.username
+        # ssl_certificate_authority
+        # ssl_client_certificate
+        # ssl_client_certificate_enable
+        # ssl_client_private_key
+        # ssl_enable
+        # ssl_mode
+        # ssl_storage_directory
+        # stream_map_config
+        # stream_maps
