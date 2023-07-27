@@ -3,28 +3,6 @@
         "entity": "telbestanden",
         "path": "/Users/bramenning/GitHub/open-source-data-stack/data",
         "encoding": "latin1",
-        "keys": [
-            "1cHO_K",
-            "1cHO_L",
-            "Brin_volgnr",
-            "Brincode",
-            "Fixus",
-            "Geslacht",
-            "HBO_WO",
-            "Herinschrijving",
-            "Herkomst",
-            "Hogerejaars",
-            "Isatcode",
-            "Maand",
-            "Opl_vorm",
-            "Status",
-            "Studiejaar",
-            "Type_HO",
-            "_sdc_source_file",
-            "_sdc_source_lineno",
-            "meercode_A",
-            "meercode_V"
-        ],
         "delimiter": ";"
     }
 ]

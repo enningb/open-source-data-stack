@@ -1,3 +1,11 @@
 {
-    "csv_files_definition": "csv_files_definitions.json"
+    "tables": [
+        {
+            "path": "file:///Users/bramenning/GitHub/open-source-data-stack/data",
+            "name": "telbestanden",
+            "encoding": "latin1",
+            "format": "csv",
+            "delimiter": ";"
+        },
+    ]
 }

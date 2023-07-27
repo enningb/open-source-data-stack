@@ -10,20 +10,44 @@ plugins:
     - name: tap-csv
       variant: meltanolabs
       pip_url: git+https://github.com/MeltanoLabs/tap-csv.git
-      select:
-        - telbestanden._sdc_source_file
-        - telbestanden.HBO_WO
       config:
         add_metadata_columns: true
         csv_files_definition: csv_files_definitions.json
+      stream_maps:
+        telbestanden_2018:
+          __source__: studielink
+          __filter__: Studiejaar.eq(2018)
       metadata:
         studielink:
           replication-method: INCREMENTAL
-          replication-key: _sdc_source_file
-          _sdc_source_file:
+          replication-key: id
+          id:
             is-replication-key: true
-
-  #          replication-key: _sdc_source_file
+    - name: tap-spreadsheets-anywhere
+      variant: ets
+      pip_url: git+https://github.com/ets/tap-spreadsheets-anywhere.git
+      namespace: tap_spreadsheets_anywhere
+      executable: tap-spreadsheets-anywhere
+      capabilities:
+        - catalog
+        - discover
+        - state
+      config:
+        tables:
+          - path: "file:///Users/bramenning/GitHub/open-source-data-stack/data"
+            name: "telbestanden"
+            pattern: "*.csv"
+            start_date: "2009-12-10T13:49:51.141Z"
+            key_properties: []
+            format: "csv"
+            delimiter: ";"
+            #quotechar: '"'
+            #universal_newlines: false
+            #sample_rate: 10
+            #max_sampling_read: 2000
+            #max_sampled_files: 3
+            #prefer_number_vs_integer: true
+            #selected: true
   loaders:
     - name: target-s3
       variant: crowemi
@@ -36,7 +60,7 @@ plugins:
         cloud_provider.aws.aws_secret_access_key: zBR6d3u3nBBopndrrMgV5Pt4fU3qxy4DiFMNE4jX
         format.format_type: parquet
         prefix: meltano
-        append_date_to_filename: false
+        append_date_to_filename: true
     - name: target-jsonl
       variant: andyh1203
       pip_url: target-jsonl
@@ -49,25 +73,46 @@ plugins:
         default_target_schema: raw
         user: docker
         host: localhost
-        password: docker
-        # dialect+driver
-        # flattening_enabled
-        # flattening_max_depth
-        # hard_delete
-        # port
-        # sqlalchemy_url
-        # ssh_tunnel.enable
-        # ssh_tunnel.host
-        # ssh_tunnel.port
-        # ssh_tunnel.private_key
-        # ssh_tunnel.private_key_password
-        # ssh_tunnel.username
-        # ssl_certificate_authority
-        # ssl_client_certificate
-        # ssl_client_certificate_enable
-        # ssl_client_private_key
-        # ssl_enable
-        # ssl_mode
-        # ssl_storage_directory
-        # stream_map_config
-        # stream_maps
+        password:
+          docker
+          # dialect+driver
+          # flattening_enabled
+          # flattening_max_depth
+          # hard_delete
+          # port
+          # sqlalchemy_url
+          # ssh_tunnel.enable
+          # ssh_tunnel.host
+          # ssh_tunnel.port
+          # ssh_tunnel.private_key
+          # ssh_tunnel.private_key_password
+          # ssh_tunnel.username
+          # ssl_certificate_authority
+          # ssl_client_certificate
+          # ssl_client_certificate_enable
+          # ssl_client_private_key
+          # ssl_enable
+          # ssl_mode
+          # ssl_storage_directory
+          # stream_map_config
+          # stream_maps
+  mappers:
+    - name: meltano-map-transformer
+      variant: meltano
+      pip_url: git+https://github.com/MeltanoLabs/meltano-map-transform.git
+      executable: meltano-map-transform
+      mappings:
+        - name: add_telbestanden_metadata
+          config:
+            stream_maps:
+              telbestanden:
+                source_filename: _sdc_source_file.split('/')[-1].split(".")[0]
+                collegejaar: _sdc_source_file.split('/')[-1].split(".")[0][14:18]
+                volgnummer: _sdc_source_file.split('/')[-1].split(".")[0][20:22]
+                peildatum:
+                  _sdc_source_file.split('/')[-1].split(".")[0][23:]
+                  # an id is created for every row in a telbestand. It is a combination of peildatum, collegejaar and rownumber.
+                id:
+                  int(_sdc_source_file.split('/')[-1].split('.')[0][23:] + _sdc_source_file.split('/')[-1].split('.')[0][14:18]
+                  + str(_sdc_source_lineno).zfill(6))
+                __key_properties__: [id]

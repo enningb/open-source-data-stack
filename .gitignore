@@ -12,3 +12,6 @@ airflow/logs/dag_processor_manager/dag_processor_manager.log
 airflow/logs/scheduler/latest
 data/*
 dbt/jaffle_shop/target/*.*
+meltano/ed2c/plugins/extractors/tap-spreadsheets-anywhere--ets.lock
+dbt/jaffle_shop/target/graph.gpickle
+dbt/jaffle_shop/target/catalog.json
