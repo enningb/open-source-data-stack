@@ -36,7 +36,7 @@ plugins:
         tables:
           - path: "file:///Users/bramenning/GitHub/open-source-data-stack/data"
             name: "telbestanden"
-            pattern: "*.csv"
+            pattern: ".csv$"
             start_date: "2009-12-10T13:49:51.141Z"
             key_properties: []
             format: "csv"
@@ -115,4 +115,18 @@ plugins:
                 id:
                   int(_sdc_source_file.split('/')[-1].split('.')[0][23:] + _sdc_source_file.split('/')[-1].split('.')[0][14:18]
                   + str(_sdc_source_lineno).zfill(6))
+                __key_properties__: [id]
+        - name: add_telbestanden_metadata_spreadsheet_anywhere
+          config:
+            stream_maps:
+              telbestanden:
+                source_filename: _smart_source_file.split('/')[-1].split(".")[0]
+                collegejaar: _smart_source_file.split('/')[-1].split(".")[0][14:18]
+                volgnummer: _smart_source_file.split('/')[-1].split(".")[0][20:22]
+                peildatum:
+                  _smart_source_file.split('/')[-1].split(".")[0][23:]
+                  # an id is created for every row in a telbestand. It is a combination of peildatum, collegejaar and rownumber.
+                id:
+                  int(_smart_source_file.split('/')[-1].split('.')[0][23:] + _smart_source_file.split('/')[-1].split('.')[0][14:18]
+                  + str(_smart_source_lineno).zfill(6))
                 __key_properties__: [id]
